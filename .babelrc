@@ -1,0 +1,22 @@
+{
+    "presets": [
+      [
+        "env",
+        {
+          "esmodules": false,
+          "targets": {
+            "browsers": [
+              "> 3%"
+            ]
+          }
+        }
+      ]
+    ],
+    "presets": ["@babel/preset-env", "@babel/typescript", "@babel/react"],
+    "plugins": [
+        ["@babel/plugin-transform-runtime",
+        {
+          "regenerator": true
+        }]
+      ]
+  }
