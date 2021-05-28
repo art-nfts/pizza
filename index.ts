@@ -41,15 +41,16 @@ async function update(date: Date) {
   const price = data.filter(d => d[0] == dateString)[0][1];
   const earthPos = (window.innerWidth-window.innerHeight)/2;
   const earthSize = window.innerHeight;
-  const priceRatio = 10000*price/41;
-  const sizeRatio = priceRatio*0.5/12742000;//50cm pizza
-  const pizzaSize = earthSize*sizeRatio;//earthSize/20;
-  const pizzaX = earthPos+(earthSize*0.68)-(pizzaSize/2);
-  const pizzaY = (earthSize*0.64)-(pizzaSize/2);
+  const pizzaPrice = 10000*price;
+  const sizeRatio = pizzaPrice/41*0.5/12742000;//50cm pizza
+  const pizzaSize = earthSize*sizeRatio;
+  const pizzaX = earthPos+(earthSize*0.668)-(pizzaSize/2);
+  const pizzaY = (earthSize*0.597)-(pizzaSize/2);
   context.clearRect(0, 0, window.innerWidth, window.innerHeight);
   context.drawImage(earth, earthPos, 0, earthSize, earthSize);
-  context.drawImage(pizza, pizzaX, pizzaY, pizzaSize, pizzaSize);
+  context.drawImage(pizza, pizzaX+(pizzaSize/50)**2.5, pizzaY-(pizzaSize/80)**2.7, pizzaSize, pizzaSize);
+  context.drawImage(pizza, pizzaX-(pizzaSize/50)**2.5, pizzaY+(pizzaSize/80)**2.6, pizzaSize, pizzaSize);
   context.font = '48px serif';
   context.fillStyle = 'white';
-  context.fillText(dateString+', $'+Math.round(price), 20, window.innerHeight-20);
+  context.fillText(dateString+', $'+Math.round(pizzaPrice), 20, window.innerHeight-20);
 }
