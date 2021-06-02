@@ -29,7 +29,11 @@ const API_URL = 'https://www.quandl.com/api/v3/datasets/BCHAIN/MKPRU.json?api_ke
 let context: CanvasRenderingContext2D;
 let data: [string, number][];
 
-window.onload = async () => {data = (await (await fetch(API_URL)).json()).dataset.data;
+window.onload = async () => {
+  data = (await (await fetch(API_URL)).json()).dataset.data;
+  for (let i of _.range(4029, 3941)) {
+    data[i][1] = (41/10000)+((4029-i)/(4028-3941)*(0.0688-(41/10000)))
+  }
   console.log(data)
   const canvas = <HTMLCanvasElement>document.getElementById('canvas');
   canvas.width = window.innerWidth;
@@ -37,7 +41,7 @@ window.onload = async () => {data = (await (await fetch(API_URL)).json()).datase
   context = canvas.getContext('2d');
   context.font = '10px Arial';
   canvas.innerHTML = "";
-  animateFrom(new Date('2010-07-01'));
+  animateFrom(new Date('2010-05-01'));
 }
 
 async function animateFrom(startDate: Date) {
@@ -50,7 +54,7 @@ async function animateFrom(startDate: Date) {
       new Scene(dinnerPizza, [0.5, 0.8], homes, 200).update(currentDate);
     } else if (currentDate < new Date('2013-01-01')) {
       new Scene(dinnerPizza, [0.5, 0.2], jville, 4000).update(currentDate);
-    } else if (currentDate < new Date('2015-10-01')) {
+    } else if (currentDate < new Date('2016-01-01')) {
       new Scene(dinnerPizza, [0.7, 0.2], florida, 500000).update(currentDate);
     } else {
       new Scene(dinnerPizza, [0.668, 0.597], earth, 12742000).update(currentDate);
@@ -77,7 +81,6 @@ class Scene {
     const pizzaX = bgPos+(bgSize*this.pizzaRelPos[0])-(pizzaSize/2);
     const pizzaY = (bgSize*this.pizzaRelPos[1])-(pizzaSize/2/2.5);
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    console.log(bgPos, bgSize, pizzaSize)
     context.drawImage(this.bgImage, bgPos, 0, bgSize, bgSize);
     context.drawImage(this.pizzaImage, pizzaX, pizzaY, pizzaSize, pizzaSize/2.5);
     context.font = '48px serif';
