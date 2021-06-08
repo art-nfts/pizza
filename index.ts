@@ -30,9 +30,10 @@ let context: CanvasRenderingContext2D;
 let data: [string, number][];
 
 window.onload = async () => {
+  const params = new URLSearchParams(window.location.search);
   data = (await (await fetch(API_URL)).json()).dataset.data;
-  for (let i of _.range(4029, 3941)) {
-    data[i][1] = (41/10000)+((4029-i)/(4028-3941)*(0.0688-(41/10000)))
+  for (let i of _.range(4035, 3941)) {
+    data[i][1] = (41/10000)+((4035-i)/(4034-3941)*(0.0688-(41/10000)))
   }
   console.log(data)
   const canvas = <HTMLCanvasElement>document.getElementById('canvas');
@@ -41,26 +42,36 @@ window.onload = async () => {
   context = canvas.getContext('2d');
   context.font = '10px Arial';
   canvas.innerHTML = "";
-  animateFrom(new Date('2010-05-01'));
+  const date = params.get('date');
+  if (date) {
+    setDate(new Date(date));
+  } else {
+    setDate(new Date('2010-05-22'));
+    setTimeout(() => animateFrom(new Date('2010-05-22')), 2000);
+  }
 }
 
 async function animateFrom(startDate: Date) {
   const today = new Date();
   const currentDate = startDate;
   while (currentDate <= today) {
-    if (currentDate < new Date('2010-10-01')) {
-      new Scene(dinnerPizza, [0.5, 0.8], dinner, 5).update(currentDate);
-    } else if (currentDate < new Date('2011-03-01')) {
-      new Scene(dinnerPizza, [0.5, 0.8], homes, 200).update(currentDate);
-    } else if (currentDate < new Date('2013-01-01')) {
-      new Scene(dinnerPizza, [0.5, 0.2], jville, 4000).update(currentDate);
-    } else if (currentDate < new Date('2016-01-01')) {
-      new Scene(dinnerPizza, [0.7, 0.2], florida, 500000).update(currentDate);
-    } else {
-      new Scene(dinnerPizza, [0.668, 0.597], earth, 12742000).update(currentDate);
-    }
+    setDate(currentDate);
     currentDate.setDate(currentDate.getDate()+1);
     await new Promise(resolve => setTimeout(resolve, 10));
+  }
+}
+
+function setDate(date: Date) {
+  if (date < new Date('2010-10-01')) {
+    new Scene(dinnerPizza, [0.5, 0.8], dinner, 4).update(date);
+  } else if (date < new Date('2011-03-01')) {
+    new Scene(dinnerPizza, [0.5, 0.8], homes, 200).update(date);
+  } else if (date < new Date('2013-03-01')) {
+    new Scene(dinnerPizza, [0.5, 0.2], jville, 4000).update(date);
+  } else if (date < new Date('2017-06-01')) {
+    new Scene(dinnerPizza, [0.7, 0.2], florida, 500000).update(date);
+  } else {
+    new Scene(dinnerPizza, [0.668, 0.597], earth, 12742000).update(date);
   }
 }
 
@@ -76,7 +87,7 @@ class Scene {
     const bgPos = (window.innerWidth-window.innerHeight)/2;
     const bgSize = window.innerHeight;
     const pizzaPrice = 10000*price;
-    const sizeRatio = pizzaPrice/41*1/this.bgRefSize;//2*50cm pizza
+    const sizeRatio = pizzaPrice/41*1.5/this.bgRefSize;//2*75cm pizza
     const pizzaSize = bgSize*sizeRatio;
     const pizzaX = bgPos+(bgSize*this.pizzaRelPos[0])-(pizzaSize/2);
     const pizzaY = (bgSize*this.pizzaRelPos[1])-(pizzaSize/2/2.5);
