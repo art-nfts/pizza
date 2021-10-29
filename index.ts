@@ -42,8 +42,9 @@ window.onload = async () => {
   context = canvas.getContext('2d');
   context.font = '10px Arial';
   canvas.innerHTML = "";
-  const date = params.get('date');
+  let date = params.get('date');
   if (date) {
+    date = date.slice(0,4) + '-' + date.slice(4,6) + '-' + date.slice(6);
     setDate(new Date(date));
   } else {
     setDate(new Date('2010-05-22'));
