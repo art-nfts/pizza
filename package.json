@@ -13,7 +13,7 @@
   },
   "scripts": {
     "watch": "cross-env NODE_ENV=development parcel index.html --no-hmr --open",
-    "build": "cross-env NODE_ENV=production parcel build index.html --public-url https://florianthalmann.github.io/pizza",
+    "build": "cross-env NODE_ENV=production parcel build index.html --public-url https://art-nfts.github.io/pizza",
     "lint": "eslint ."
   },
   "browser": {
